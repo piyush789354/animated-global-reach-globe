@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Global Reach Globe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    #globeViz {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+<div id="globeViz"></div>
+
+<script src="https://unpkg.com/three/build/three.min.js"></script>
+<script src="https://unpkg.com/globe.gl"></script>
+
+<script>
+  const locations = [
+    { name: "Saudi Arabia", lat: 23.8859, lng: 45.0792 },
+    { name: "Egypt", lat: 26.8206, lng: 30.8025 },
+    { name: "Germany", lat: 51.1657, lng: 10.4515 },
+    { name: "Ireland", lat: 53.4129, lng: -8.2439 },
+    { name: "Sweden", lat: 60.1282, lng: 18.6435 },
+    { name: "Philippines", lat: 12.8797, lng: 121.7740 },
+    { name: "Netherlands", lat: 52.1326, lng: 5.2913 },
+    { name: "Canada", lat: 56.1304, lng: -106.3468 },
+    { name: "Ethiopia", lat: 9.1450, lng: 40.4897 },
+    { name: "Iraq", lat: 33.2232, lng: 43.6793 },
+    { name: "Jordan", lat: 30.5852, lng: 36.2384 }
+  ];
+
+  const globe = Globe()(document.getElementById("globeViz"))
+    .globeImageUrl("//unpkg.com/three-globe/example/img/earth-night.jpg")
+    .backgroundColor("#000")
+    .pointsData(locations)
+    .pointLat(d => d.lat)
+    .pointLng(d => d.lng)
+    .pointColor(() => "#FFD700")
+    .pointRadius(0.4)
+    .pointAltitude(0.06)
+    .pointsMerge(true)
+    .labelsData(locations)
+    .labelLat(d => d.lat)
+    .labelLng(d => d.lng)
+    .labelText(d => d.name)
+    .labelSize(1.4)
+    .labelDotRadius(0.3)
+    .labelColor(() => "#FFFFFF")
+    .labelResolution(2)
+    .atmosphereColor("#6b5cff")
+    .atmosphereAltitude(0.28);
+
+  globe.pointOfView({ altitude: 2.3 });
+  globe.controls().autoRotate = true;
+  globe.controls().autoRotateSpeed = 0.55;
+
+  let bright = true;
+  setInterval(() => {
+    globe
+      .pointAltitude(bright ? 0.1 : 0.06)
+      .pointRadius(bright ? 0.5 : 0.4);
+    bright = !bright;
+  }, 1200);
+</script>
+
+</body>
+</html>
